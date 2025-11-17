@@ -5,9 +5,11 @@ export class Todo {
   }
 
   _setEventListeners() {
+    const todoDate = this._todoElement.querySelector(".todo__date");
+    const todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
     // If a due date has been set, parsing this it with `new Date` will return a
     // number. If so, we display a string version of the due date in the todo.
-    const dueDate = new Date(data.date);
+    const dueDate = new Date(this._data.date);
     if (!isNaN(dueDate)) {
       todoDate.textContent = `Due: ${dueDate.toLocaleString("en-US", {
         year: "numeric",
@@ -16,8 +18,24 @@ export class Todo {
       })}`;
     }
     todoDeleteBtn.addEventListener("click", () => {
-      todoElement.remove();
+      this._todoElement.remove();
     });
+
+    this._todoCheckboxEl.addEventListener("change", () => {
+      this._data.completed = !this._data.completed;
+      console.log(this._data.completed);
+    });
+  }
+
+  _generateCheckboxEl() {
+    this._todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
+    this._todoLabel = this._todoElement.querySelector(".todo__label");
+    this._todoCheckboxEl.checked = this._data.completed;
+
+    // Apply id and for attributes.
+    // The id will initially be undefined for new todos.
+    this._todoCheckboxEl.id = `todo-${this._data.id}`;
+    this._todoLabel.setAttribute("for", `todo-${this._data.id}`);
   }
 
   getView() {
@@ -25,18 +43,11 @@ export class Todo {
       .querySelector(".todo")
       .cloneNode(true);
     const todoNameEl = this._todoElement.querySelector(".todo__name");
-    const todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
-    const todoLabel = this._todoElement.querySelector(".todo__label");
-    const todoDate = this._todoElement.querySelector(".todo__date");
-    const todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
 
     todoNameEl.textContent = this._data.name;
-    todoCheckboxEl.checked = this._data.completed;
 
-    // Apply id and for attributes.
-    // The id will initially be undefined for new todos.
-    todoCheckboxEl.id = `todo-${this._data.id}`;
-    todoLabel.setAttribute("for", `todo-${this._data.id}`);
+    this._generateCheckboxEl();
+    this._setEventListeners();
 
     return this._todoElement;
   }
