@@ -18,4 +18,4 @@ Here you can see the screenshots of the FormValidator class in work. It will val
 
 ## Deployment
 
-This project is deployed on GitHub Pages: [Link Here](https://mestabarbara.github.io/se_project_todo-app/index.html)
+This project is deployed on GitHub Pages: [Link Here](https://mestabarbara.github.io/se_project_todo-app/)
