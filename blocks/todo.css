@@ -74,6 +74,10 @@
   content: "Delete";
 }
 
+.todo__delete-btn:hover {
+  color: #181818;
+}
+
 @media screen and (max-width: 630px) {
   .todo__label {
     display: grid;
