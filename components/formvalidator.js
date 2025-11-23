@@ -75,7 +75,6 @@ export class FormValidator {
   }
 
   resetValidation() {
-    console.log("ResetValidation Method");
     const buttonElement = this._formEl.querySelector(
       this._submitButtonSelector
     );
