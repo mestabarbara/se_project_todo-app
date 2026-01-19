@@ -1,27 +1,31 @@
 export class Todo {
-  constructor(data, selector) {
+  constructor(data, selector, handleCheckBoxes, handleDeleteBtn) {
+    this._completed = data.completed;
     this._data = data;
     this._templateElement = document.querySelector(selector);
+    this._handleCheck = handleCheckBoxes;
+    this._handleDeleteBtn = handleDeleteBtn;
   }
 
   _setEventListeners() {
     const todoDeleteBtn = this._todoElement.querySelector(".todo__delete-btn");
     todoDeleteBtn.addEventListener("click", () => {
       this._todoElement.remove();
+      this._handleDeleteBtn(this._completed);
+      console.log(this._completed);
     });
 
     this._todoCheckboxEl.addEventListener("change", () => {
-      this._data.completed = !this._data.completed;
+      this._completed = !this._completed;
+      this._handleCheck(this._completed);
     });
   }
 
   _generateCheckboxEl() {
     this._todoCheckboxEl = this._todoElement.querySelector(".todo__completed");
     this._todoLabel = this._todoElement.querySelector(".todo__label");
-    this._todoCheckboxEl.checked = this._data.completed;
+    this._todoCheckboxEl.checked = this._completed;
 
-    // Apply id and for attributes.
-    // The id will initially be undefined for new todos.
     this._todoCheckboxEl.id = `todo-${this._data.id}`;
     this._todoLabel.setAttribute("for", `todo-${this._data.id}`);
   }
@@ -35,8 +39,6 @@ export class Todo {
     const todoNameEl = this._todoElement.querySelector(".todo__name");
     todoNameEl.textContent = this._data.name;
 
-    // If a due date has been set, parsing this it with `new Date` will return a
-    // number. If so, we display a string version of the due date in the todo.
     if (!isNaN(dueDate)) {
       todoDate.textContent = `Due: ${dueDate.toLocaleString("en-US", {
         year: "numeric",

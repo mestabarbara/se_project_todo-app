@@ -3,14 +3,24 @@ import { initialTodos, validationConfig } from "../utils/constants.js";
 import { Todo } from "../components/Todo.js";
 import { FormValidator } from "../components/FormValidator.js";
 import { Section } from "../components/Section.js";
-import { Popup } from "../components/Popup.js";
 import { PopupWithForm } from "../components/PopupWithForm.js";
+import { TodoCounter } from "../components/TodoCounter.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopupEl = document.querySelector("#add-todo-popup");
 const addTodoForm = addTodoPopupEl.querySelector(".popup__form");
-// const addTodoCloseBtn = addTodoPopupEl.querySelector(".popup__close");
 const todosList = document.querySelector(".todos__list");
+
+const todoCounter = new TodoCounter(initialTodos, ".counter__text");
+
+function handleCheckBoxes(completed) {
+  todoCounter.updateCompleted(completed);
+}
+
+function handleDeleteBtn(completed) {
+  todoCounter.updateCompleted(false);
+  todoCounter.updateTotal(false);
+}
 
 const addToDoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup",
@@ -26,6 +36,7 @@ const addToDoPopup = new PopupWithForm({
     const values = { name, date, id };
     const todo = generateTodo(values);
     todosList.append(todo);
+    todoCounter.updateTotal(true);
     addToDoPopup.close();
     formValidator.resetValidation();
   },
@@ -33,9 +44,13 @@ const addToDoPopup = new PopupWithForm({
 
 addToDoPopup.setEventListeners();
 
-// The logic in this function should all be handled in the Todo class.
 const generateTodo = (data) => {
-  const todo = new Todo(data, "#todo-template");
+  const todo = new Todo(
+    data,
+    "#todo-template",
+    handleCheckBoxes,
+    handleDeleteBtn
+  );
   const todoElement = todo.getView();
   return todoElement;
 };
