@@ -18,7 +18,9 @@ function handleCheckBoxes(completed) {
 }
 
 function handleDeleteBtn(completed) {
-  todoCounter.updateCompleted(false);
+  if (completed) {
+    todoCounter.updateCompleted(false);
+  }
   todoCounter.updateTotal(false);
 }
 
@@ -26,7 +28,7 @@ const addToDoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup",
   handleFormSubmit: (inputValues) => {
     const name = inputValues.name;
-    const dateInput = inputValues.data;
+    const dateInput = inputValues.date;
 
     // Create a date object and adjust for timezone
     const date = new Date(dateInput);
@@ -49,7 +51,7 @@ const generateTodo = (data) => {
     data,
     "#todo-template",
     handleCheckBoxes,
-    handleDeleteBtn
+    handleDeleteBtn,
   );
   const todoElement = todo.getView();
   return todoElement;
@@ -59,7 +61,7 @@ const section = new Section({
   items: initialTodos,
   renderer: (item) => {
     const todo = generateTodo(item);
-    todosList.append(todo);
+    return todo;
   },
   containerSelector: ".todos__list",
 });

@@ -12,7 +12,6 @@ export class Todo {
     todoDeleteBtn.addEventListener("click", () => {
       this._todoElement.remove();
       this._handleDeleteBtn(this._completed);
-      console.log(this._completed);
     });
 
     this._todoCheckboxEl.addEventListener("change", () => {
