@@ -2,39 +2,29 @@ export class Popup {
   constructor(popupSelector) {
     this._popup = document.querySelector(popupSelector);
     this._popupCloseBtn = this._popup.querySelector(".popup__close");
-    console.log(this._popup);
   }
 
   open() {
     this._popup.classList.add("popup_visible");
-    console.log("pop up open method.");
+    document.addEventListener("keyup", this._handleEscapeClose);
   }
 
   close() {
     this._popup.classList.remove("popup_visible");
+    document.removeEventListener("keyup", this._handleEscapeClose);
   }
 
-  _handleEscapeClose = (evt) => {};
+  _handleEscapeClose = (evt) => {
+    if (evt.key === "Escape") {
+      this.close();
+    }
+  };
 
   setEventListeners() {
-    this._popupCloseBtn.addEventListener("click", () => {
-      this.close();
+    this._popup.addEventListener("mousedown", (evt) => {
+      if (evt.target === this._popup || evt.target === this._popupCloseBtn) {
+        this.close();
+      }
     });
-
-    // addTodoForm.addEventListener("submit", (evt) => {
-    //   evt.preventDefault();
-    //   const name = evt.target.name.value;
-    //   const dateInput = evt.target.date.value;
-    //   // Create a date object and adjust for timezone
-    //   const date = new Date(dateInput);
-    //   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-    //   const id = uuidv4();
-    //   const values = { name, date, id };
-    //   const todo = generateTodo(values);
-    //   todosList.append(todo);
-    //   // closeModal(addTodoPopup);
-    //   addToDoPopup.close();
-    //   formValidator.resetValidation();
-    // });
   }
 }
